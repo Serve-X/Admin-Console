@@ -1,0 +1,65 @@
+<section class="card">
+  <header class="section-header">
+    <div>
+      <h2>Menu items</h2>
+      <p>Curate the menu offered to guests.</p>
+    </div>
+    <button type="button" class="secondary" (click)="loadItems()">Refresh</button>
+  </header>
+
+  <table class="table-grid">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.itemId || '—' }}</td>
+        <td>{{ item.itemName }}</td>
+        <td>{{ item.itemDescription }}</td>
+        <td>{{ item.itemPrice }}</td>
+        <td>
+          <span class="badge" [class.success]="item.isAvailable" [class.warning]="item.isAvailable === false">
+            {{ item.isAvailable ? 'Available' : 'Unavailable' }}
+          </span>
+        </td>
+        <td class="actions">
+          <button type="button" class="secondary" (click)="selectItem(item)">Edit</button>
+          <button type="button" (click)="deleteItem(item)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="card">
+  <h2>{{ form.value.itemId ? 'Update Item' : 'Create Item' }}</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form-grid">
+    <label>
+      Name
+      <input type="text" formControlName="itemName" />
+    </label>
+    <label>
+      Description
+      <textarea rows="3" formControlName="itemDescription"></textarea>
+    </label>
+    <label>
+      Price
+      <input type="text" formControlName="itemPrice" />
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" formControlName="isAvailable" /> Available for ordering
+    </label>
+    <div class="form-actions">
+      <button type="submit">{{ form.value.itemId ? 'Save changes' : 'Create item' }}</button>
+      <button type="button" class="secondary" (click)="resetForm()">Clear</button>
+    </div>
+  </form>
+  <p *ngIf="status" [class]="'status ' + status.type">{{ status.message }}</p>
+</section>

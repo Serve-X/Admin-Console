@@ -1,0 +1,79 @@
+<div class="home-page">
+  <header class="home-header">
+    <div class="home-header__title">
+      <p class="eyebrow">Operations workspace</p>
+      <h1>ServeX admin fabric</h1>
+      <p>Live orchestration for restaurants, seating and omnichannel orders.</p>
+    </div>
+
+    <div class="home-header__search" role="search">
+      <mat-icon aria-hidden="true">search</mat-icon>
+      <input type="search" placeholder="Search restaurants, tables or customers" />
+    </div>
+
+    <div class="home-header__account" aria-live="polite">
+      <ng-container *ngIf="user$ | async as user; else signIn">
+        <div class="account-pill">
+          <mat-icon>account_circle</mat-icon>
+          <div>
+            <p class="eyebrow">Signed in</p>
+            <strong>{{ user.name || user.preferredUsername || 'ServeX admin' }}</strong>
+          </div>
+        </div>
+        <button class="btn btn-outline" type="button" (click)="logout()">Sign out</button>
+      </ng-container>
+      <ng-template #signIn>
+        <button class="btn" type="button" (click)="login()">Sign in</button>
+      </ng-template>
+    </div>
+  </header>
+
+  <section class="home-metrics" aria-label="Key health metrics">
+    <article *ngFor="let metric of heroMetrics" class="home-metric" [class.home-metric--positive]="metric.trend === 'up'"
+             [class.home-metric--negative]="metric.trend === 'down'">
+      <p class="eyebrow">{{ metric.label }}</p>
+      <h3>{{ metric.value }}</h3>
+      <p>{{ metric.helper }}</p>
+      <span class="home-metric__delta">{{ metric.delta }}</span>
+    </article>
+  </section>
+
+  <section class="home-command">
+    <div class="home-command__actions">
+      <div>
+        <p class="eyebrow">Command bar</p>
+        <h2>Guided actions</h2>
+      </div>
+      <div class="home-command__buttons">
+        <button *ngFor="let action of commandActions"
+                type="button"
+                class="command-button"
+                [class.command-button--primary]="action.emphasis === 'primary'">
+          <span class="command-button__icon" aria-hidden="true">
+            <mat-icon>{{ action.icon }}</mat-icon>
+          </span>
+          <span class="command-button__copy">
+            <strong>{{ action.label }}</strong>
+            <small>{{ action.description }}</small>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div class="home-command__signals" aria-live="polite">
+      <article *ngFor="let signal of signalInsights"
+               class="signal-card"
+               [class.signal-card--warning]="signal.status === 'warning'"
+               [class.signal-card--danger]="signal.status === 'danger'">
+        <div class="signal-card__icon" aria-hidden="true">
+          <mat-icon>{{ signal.icon }}</mat-icon>
+        </div>
+        <div>
+          <p class="signal-card__title">{{ signal.title }}</p>
+          <p class="signal-card__detail">{{ signal.detail }}</p>
+          <small>{{ signal.meta }}</small>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,69 @@
+<section class="card">
+  <header class="section-header">
+    <div>
+      <h2>Tables</h2>
+      <p>Track seating availability per restaurant.</p>
+    </div>
+    <button type="button" class="btn btn-ghost btn-sm" (click)="loadTables()">Refresh</button>
+  </header>
+
+  <table class="table-grid">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Number</th>
+        <th>Seats</th>
+        <th>Restaurant</th>
+        <th>Available</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let table of tables">
+        <td>{{ table.tableId || '—' }}</td>
+        <td>{{ table.tableNumber }}</td>
+        <td>{{ table.seatCount }}</td>
+        <td>{{ table.restaurant?.restaurantName || table.restaurant?.restaurantId || '—' }}</td>
+        <td>
+          <span class="badge" [class.success]="table.available" [class.danger]="table.available === false">
+            {{ table.available ? 'Available' : 'Occupied' }}
+          </span>
+        </td>
+        <td class="cell-actions">
+          <div class="btn-group">
+            <button type="button" class="btn btn-outline btn-sm" (click)="selectTable(table)">Edit</button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="deleteTable(table)">Delete</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="card">
+  <h2>{{ form.value.tableId ? 'Update Table' : 'Create Table' }}</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form-grid">
+    <label>
+      Table Number
+      <input type="number" formControlName="tableNumber" />
+    </label>
+    <label>
+      Seat Count
+      <input type="number" formControlName="seatCount" />
+    </label>
+    <label>
+      Restaurant ID
+      <input type="text" formControlName="restaurantId" placeholder="Optional" />
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" formControlName="available" /> Available
+    </label>
+
+    <div class="form-actions">
+      <button type="submit" class="btn">{{ form.value.tableId ? 'Save changes' : 'Create table' }}</button>
+      <button type="button" class="btn btn-ghost" (click)="resetForm()">Clear</button>
+    </div>
+  </form>
+
+  <p *ngIf="status" [class]="'status ' + status.type">{{ status.message }}</p>
+</section>

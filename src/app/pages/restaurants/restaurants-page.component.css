@@ -1,0 +1,42 @@
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  gap: 0.3rem;
+}
+
+.checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.status {
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.status.success {
+  color: #03543f;
+}
+
+.status.error {
+  color: #981b1c;
+}

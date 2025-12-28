@@ -1,0 +1,60 @@
+<section class="card">
+  <header class="section-header">
+    <div>
+      <h2>Customers</h2>
+      <p>Directory of patrons and their contact details.</p>
+    </div>
+    <button type="button" class="btn btn-ghost btn-sm" (click)="loadCustomers()">Refresh</button>
+  </header>
+
+  <table class="table-grid">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Orders</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of customers">
+        <td>{{ customer.customerID || '—' }}</td>
+        <td>{{ customer.customerName }}</td>
+        <td>{{ customer.customerEmail }}</td>
+        <td>{{ customer.customerPhone }}</td>
+        <td>{{ customer.orders?.length || 0 }}</td>
+        <td class="cell-actions">
+          <div class="btn-group">
+            <button type="button" class="btn btn-outline btn-sm" (click)="selectCustomer(customer)">Edit</button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="deleteCustomer(customer)">Delete</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="card">
+  <h2>{{ form.value.customerID ? 'Update customer' : 'Create customer' }}</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form-grid">
+    <label>
+      Name
+      <input type="text" formControlName="customerName" />
+    </label>
+    <label>
+      Email
+      <input type="email" formControlName="customerEmail" />
+    </label>
+    <label>
+      Phone
+      <input type="text" formControlName="customerPhone" />
+    </label>
+    <div class="form-actions">
+      <button type="submit" class="btn">{{ form.value.customerID ? 'Save changes' : 'Create customer' }}</button>
+      <button type="button" class="btn btn-ghost" (click)="resetForm()">Clear</button>
+    </div>
+  </form>
+  <p *ngIf="status" [class]="'status ' + status.type">{{ status.message }}</p>
+</section>

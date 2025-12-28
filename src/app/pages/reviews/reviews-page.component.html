@@ -1,0 +1,36 @@
+<section class="card">
+  <header class="section-header">
+    <div>
+      <h2>Customer reviews</h2>
+      <p>Monitor sentiment and feedback from guest orders.</p>
+    </div>
+    <button type="button" class="secondary" (click)="loadReviews()">Refresh</button>
+  </header>
+
+  <table class="table-grid">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Item</th>
+        <th>Rating</th>
+        <th>Category</th>
+        <th>Review</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let review of reviews">
+        <td>{{ review.reviewId || 'N/A' }}</td>
+        <td>{{ review.itemName || review.itemId || 'N/A' }}</td>
+        <td>{{ review.rating ?? 'N/A' }}</td>
+        <td>
+          <span [class]="categoryClass(review.category)">{{ review.category || 'Uncategorized' }}</span>
+        </td>
+        <td class="review-text">{{ review.text || 'N/A' }}</td>
+        <td>{{ review.createdAt ? (review.createdAt | date: 'medium') : 'N/A' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="status" [class]="'status ' + status.type">{{ status.message }}</p>
+</section>

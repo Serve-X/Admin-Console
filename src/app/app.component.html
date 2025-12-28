@@ -1,0 +1,46 @@
+<div class="cloud-shell">
+  <aside class="shell-nav" aria-label="ServeX navigation">
+    <div class="shell-nav__brand">
+      <div class="brand-mark" aria-hidden="true">
+        <span>SX</span>
+      </div>
+      <div>
+        <p class="eyebrow">ServeX fabric</p>
+        <h2>Admin console</h2>
+        <p class="muted">Orchestrate restaurants, tables & guest journeys.</p>
+      </div>
+    </div>
+
+    <div class="shell-nav__status" aria-live="polite">
+      <p class="eyebrow">Environment</p>
+      <div class="status-chip" [class.good]="environmentChip.status === 'good'">
+        <mat-icon>check_circle</mat-icon>
+        <div>
+          <strong>{{ environmentChip.label }}</strong>
+          <span>{{ environmentChip.detail }}</span>
+        </div>
+      </div>
+    </div>
+
+    <app-nav-menu></app-nav-menu>
+
+    <div class="shell-nav__auth" aria-live="polite">
+      <ng-container *ngIf="user$ | async as user; else navSignIn">
+        <div>
+          <p class="eyebrow">Signed in</p>
+          <strong>{{ user.name || user.preferredUsername || 'ServeX admin' }}</strong>
+        </div>
+        <button class="btn btn-outline" type="button" (click)="logout()">Sign out</button>
+      </ng-container>
+      <ng-template #navSignIn>
+        <button class="btn" type="button" (click)="login()">Sign in</button>
+      </ng-template>
+    </div>
+  </aside>
+
+  <div class="shell-body">
+    <main class="shell-canvas">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

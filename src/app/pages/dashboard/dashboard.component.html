@@ -1,0 +1,78 @@
+<div class="metrics-grid">
+  <mat-card class="metric-card" *ngFor="let metric of metrics">
+    <mat-card-header>
+      <mat-card-title>{{ metric.title }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="value">{{ metric.value }}</p>
+      <p class="hint">{{ metric.hint }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-button [routerLink]="metric.link">Open</a>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<div class="insights-grid">
+  <mat-card class="recent-orders-card">
+    <mat-card-header>
+      <mat-card-title>Recent Orders</mat-card-title>
+      <mat-card-subtitle>Newest five orders across all restaurants.</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="recentOrders" class="recent-table">
+        <!-- Order ID Column -->
+        <ng-container matColumnDef="orderId">
+          <th mat-header-cell *matHeaderCellDef> Order ID </th>
+          <td mat-cell *matCellDef="let order"> {{order.orderId}} </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let order">
+            <span [class]="statusColor(order.status)">{{ order.status ?? 'pending' }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Table Column -->
+        <ng-container matColumnDef="table">
+          <th mat-header-cell *matHeaderCellDef> Table </th>
+          <td mat-cell *matCellDef="let order"> {{order.tableNumber ?? '—'}} </td>
+        </ng-container>
+
+        <!-- Customer Column -->
+        <ng-container matColumnDef="customer">
+          <th mat-header-cell *matHeaderCellDef> Customer </th>
+          <td mat-cell *matCellDef="let order"> {{order.customer?.customerName ?? order.customer?.customerEmail ?? 'Walk-in'}} </td>
+        </ng-container>
+
+        <!-- Created At Column -->
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef> Created At </th>
+          <td mat-cell *matCellDef="let order"> {{order.createdAt | date : 'short'}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="status-card" *ngIf="statusSegments.length">
+    <mat-card-header>
+      <mat-card-title>Order mix</mat-card-title>
+      <mat-card-subtitle>{{ statusTotal }} total orders</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="status-chart" [style.background]="statusGradient"></div>
+      <ul>
+        <li *ngFor="let segment of statusSegments">
+          <span class="dot" [style.background]="segment.color"></span>
+          <span class="label">{{ segment.label | titlecase }}</span>
+          <strong>{{ segment.percent }}%</strong>
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+</div>

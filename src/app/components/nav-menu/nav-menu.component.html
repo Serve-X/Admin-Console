@@ -1,0 +1,28 @@
+<nav class="pivot-nav" aria-label="Primary">
+  <div>
+    <p class="eyebrow">Workspace</p>
+    <h3>ServeX areas</h3>
+  </div>
+
+  <div class="pivot-nav__links">
+    <a *ngFor="let link of navLinks"
+       class="pivot-nav__link"
+       [routerLink]="link.path"
+       routerLinkActive="is-active"
+       [routerLinkActiveOptions]="{ exact: true }">
+      <span class="pivot-nav__icon" aria-hidden="true">
+        <mat-icon>{{ link.icon }}</mat-icon>
+      </span>
+      <span class="pivot-nav__copy">
+        <span class="pivot-nav__title">{{ link.label }}</span>
+        <span class="pivot-nav__description">{{ link.description }}</span>
+      </span>
+      <mat-icon class="pivot-nav__chevron" aria-hidden="true">chevron_right</mat-icon>
+    </a>
+  </div>
+
+  <div class="pivot-nav__cta">
+    <p>Provision a new restaurant landing area.</p>
+    <button class="btn btn-outline" type="button" routerLink="/restaurants">Add location</button>
+  </div>
+</nav>

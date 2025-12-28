@@ -1,0 +1,17 @@
+.review-text {
+  max-width: 360px;
+  white-space: pre-wrap;
+}
+
+.status {
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.status.success {
+  color: #03543f;
+}
+
+.status.error {
+  color: #981b1c;
+}

@@ -1,0 +1,48 @@
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  gap: 0.3rem;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+}
+
+.selection {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f6f8ff;
+  border-radius: 0.75rem;
+}
+
+.status {
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.status.success {
+  color: #03543f;
+}
+
+.status.error {
+  color: #981b1c;
+}

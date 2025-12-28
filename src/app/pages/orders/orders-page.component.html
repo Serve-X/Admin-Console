@@ -1,0 +1,86 @@
+<section class="card">
+  <header class="section-header">
+    <div>
+      <h2>Orders</h2>
+      <p>Live feed of every order in the system.</p>
+    </div>
+    <button type="button" class="btn btn-ghost btn-sm" (click)="loadOrders()">Refresh</button>
+  </header>
+  <table class="table-grid">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Table</th>
+        <th>Customer</th>
+        <th>Created</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.orderId || '—' }}</td>
+        <td>
+          <span [class]="statusClass(order.status)">{{ order.status }}</span>
+        </td>
+        <td>{{ order.tableNumber || '—' }}</td>
+        <td>{{ order.customer?.customerName || '—' }}</td>
+        <td>{{ order.createdAt | date : 'short' }}</td>
+        <td class="cell-actions">
+          <div class="btn-group">
+            <button type="button" class="btn btn-outline btn-sm" (click)="selectOrder(order)">Inspect</button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="deleteOrder(order)">Delete</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="layout">
+  <section class="card">
+    <h3>Update status</h3>
+    <form [formGroup]="statusForm" (ngSubmit)="updateStatus()" class="form-grid">
+      <label>
+        Order ID
+        <input type="text" formControlName="orderId" />
+      </label>
+      <label>
+        Status
+        <select formControlName="status">
+          <option *ngFor="let option of statusOptions" [ngValue]="option">{{ option }}</option>
+        </select>
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="btn">Apply status</button>
+      </div>
+    </form>
+
+    <article *ngIf="selectedOrder" class="selection">
+      <h4>Selected order</h4>
+      <p><strong>Customer:</strong> {{ selectedOrder.customer?.customerName || '—' }}</p>
+      <p><strong>Items:</strong> {{ selectedOrder.oderDetails?.length || 0 }}</p>
+    </article>
+  </section>
+
+  <section class="card">
+    <h3>Create quick order</h3>
+    <form [formGroup]="createForm" (ngSubmit)="createOrder()" class="form-grid">
+      <label>
+        Table Number
+        <input type="number" formControlName="tableNumber" />
+      </label>
+      <label>
+        Status
+        <select formControlName="status">
+          <option *ngFor="let option of statusOptions" [ngValue]="option">{{ option }}</option>
+        </select>
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="btn">Create order</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<p *ngIf="status" [class]="'status ' + status.type">{{ status.message }}</p>

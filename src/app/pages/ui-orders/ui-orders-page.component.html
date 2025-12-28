@@ -1,0 +1,111 @@
+<section class="card">
+  <header class="section-header">
+    <div>
+      <h2>Guest-facing orders</h2>
+      <p>Monitor what the ServeX UI surfaces to diners.</p>
+    </div>
+    <form [formGroup]="filterForm" (ngSubmit)="applyFilter()" class="filter">
+      <label>
+        Table #
+        <input type="number" formControlName="tableNumber" placeholder="All" />
+      </label>
+      <button type="submit" class="secondary">Apply</button>
+    </form>
+  </header>
+
+  <table class="table-grid">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Table</th>
+        <th>Status</th>
+        <th>Customer</th>
+        <th>Items</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.orderId }}</td>
+        <td>{{ order.tableNumber }}</td>
+        <td><span [class]="statusClass(order.status)">{{ order.status }}</span></td>
+        <td>{{ order.customerName }}</td>
+        <td>{{ order.items?.length || 0 }}</td>
+        <td>{{ order.createdAt | date : 'short' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="layout">
+  <section class="card">
+    <h3>Update UI order status</h3>
+    <form [formGroup]="statusForm" (ngSubmit)="updateStatus()" class="form-grid">
+      <label>
+        Order ID
+        <input type="text" formControlName="orderId" />
+      </label>
+      <label>
+        Status
+        <select formControlName="status">
+          <option *ngFor="let option of statusOptions" [ngValue]="option">{{ option }}</option>
+        </select>
+      </label>
+      <div class="form-actions">
+        <button type="submit">Update status</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h3>Place new order</h3>
+    <form [formGroup]="placeForm" (ngSubmit)="placeOrder()" class="form-grid">
+      <label>
+        Table Number
+        <input type="number" formControlName="tableNumber" />
+      </label>
+      <div formGroupName="customer" class="customer-grid">
+        <label>
+          Name
+          <input type="text" formControlName="name" />
+        </label>
+        <label>
+          Email
+          <input type="email" formControlName="email" />
+        </label>
+        <label>
+          Phone
+          <input type="text" formControlName="phone" />
+        </label>
+      </div>
+
+      <div class="items" formArrayName="items">
+        <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" class="item-row">
+          <label>
+            Menu item
+            <select formControlName="itemId" [disabled]="!menuItems.length">
+              <option value="" disabled>Select menu item</option>
+              <option *ngFor="let option of menuItems" [value]="option.itemId || option.itemName || ''">
+                {{ option.itemName || option.itemId }}
+                <ng-container *ngIf="option.itemPrice"> — {{ option.itemPrice }}</ng-container>
+              </option>
+            </select>
+          </label>
+          <label>
+            Qty
+            <input type="number" formControlName="quantity" min="1" />
+          </label>
+          <button type="button" class="secondary" (click)="removeItem(i)" [disabled]="items.length === 1">Remove</button>
+        </div>
+        <p class="empty-menu" *ngIf="!menuItems.length">Add menu items first to build custom orders.</p>
+        <button type="button" class="secondary" (click)="addItem()" [disabled]="!menuItems.length">Add item</button>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit">Place order</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<p *ngIf="status" [class]="'status ' + status.type">{{ status.message }}</p>
