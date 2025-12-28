@@ -1,4 +1,4 @@
-# ServeX – Restaurant Management System 
+# ServeX – Restaurant Management System (react)
 
 ServeX is a **backend system for a digital restaurant management platform**, built using **Spring Boot** and designed with **real-world architecture principles**.  
 It supports secure authentication, RESTful APIs, AI-powered review classification, and clean separation between frontend, backend, and auxiliary services.
